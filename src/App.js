@@ -18,11 +18,19 @@ function App() {
     const _token = hash.access_token
     if (_token) {
       dispatch({ type: 'SET_TOKEN', token: _token })
+
       spotify.setAccessToken(_token);
+
       spotify.getMe().then(user => {
-        console.log('user - ', user)
         dispatch({ type: 'SET_USER', user })
       });
+
+      spotify.getUserPlaylists().then((playlists) => {
+        dispatch({ type: 'SET_PLAYLISTS', playlists })
+      })
+      //50raOFso2ThHKzcl2s2YyY
+      spotify.getPlaylist('4MGVxKmpogK6rJnLXlm9Hv').then(
+        response => dispatch({ type: 'SET_DISCOVER_WEEKLY', discover_weekly: response }))
     }
     console.log("🚀 ~ file: App.js ~ line 10 ~ useEffect ~ token", _token)
   }, []);
